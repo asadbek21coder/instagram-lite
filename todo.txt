@@ -1,0 +1,50 @@
+Instagram
+
+Post {
+    ID
+    Title
+    Body
+    ImageUrl
+    LikeCount
+    AuthorId
+    CreatedAt
+    UpdatedAt
+}
+Post - CRUD
+    CreatePost
+    GetPosts
+    UpdatePost
+    DeletePost
+
+Commentary {
+    ID
+    CommentedPost
+    AuthorId
+    Body
+    LikeCount
+    CreatedAt
+    UpdatedAt
+}
+
+Commentary - CRUD
+    CreateComment
+    GetComments
+    UpdateComment
+    DeleteComment
+
+Reply {
+    ID
+    CommentId
+    PostId
+    AuthorId
+    Body
+    CreatedAt
+    UpdatedAt
+    LikeCount
+}
+
+Reply -CRUD
+    CreateReply
+    GetReplys
+    UpdateReply
+    DeleteReply
