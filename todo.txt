@@ -48,3 +48,10 @@ Reply -CRUD
     GetReplys
     UpdateReply
     DeleteReply
+
+User {
+    Username - must bu uique(takrorlanmasligi kk)
+    PhoneNumber
+    Age
+    Gender bool
+}
