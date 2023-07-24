@@ -31,7 +31,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 
 	newpost.ID = len(posts) + 1 // logikasini tog'irlash kk
 	newpost.CreatedAt = time.Now()
-	// qo'shishdan oldin postname band emasligini tekshirish, band bo'lsa error qaytarish kk
+
 	posts = append(posts, newpost)
 	data, _ := json.Marshal(posts)
 
@@ -43,7 +43,8 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func getPosts(w http.ResponseWriter, r *http.Request) {
-
+	// Har bitta post bn uni commentlari va har bitta 
+	// commentni replylari bilan birga  chiqarilsin 
 }
 
 func updatePost(w http.ResponseWriter, r *http.Request) {

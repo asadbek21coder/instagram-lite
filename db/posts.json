@@ -1,5 +1,4 @@
 [
-    
     {"ID":1,"Title":"my first post","Body":"Hello friends","ImageUrl":"pic1.png","LikeCount":0,"AuthorId":1,"CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z"},
 
     {"ID":2,"Title":"my first post","Body":"Hello friends","ImageUrl":"pic1.png","LikeCount":0,"AuthorId":1,"CreatedAt":"2023-07-20T11:47:31.93980995+05:00","UpdatedAt":"0001-01-01T00:00:00Z"}

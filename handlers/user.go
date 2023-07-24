@@ -62,6 +62,11 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
 
+	read, _ := os.ReadFile("db/users.json")
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Fprint(w, string(read))
 }
 
 func updateUser(w http.ResponseWriter, r *http.Request) {

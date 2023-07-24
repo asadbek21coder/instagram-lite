@@ -2,14 +2,13 @@ package models
 
 import "time"
 
-type Post struct {
+type Reply struct {
 	ID        int
-	Title     string
-	Body      string
-	ImageUrl  string
-	LikeCount int
+	CommentId int
+	PostId    int
 	AuthorId  int
+	Body      string
+	LikeCount int
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
-	
