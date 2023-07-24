@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 
@@ -14,6 +15,10 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		createUser(w, r)
 	case http.MethodGet:
 		getUsers(w, r)
+	case http.MethodPut:
+		updateUser(w, r)
+	case http.MethodDelete:
+		deleteUser(w, r)
 	}
 }
 
@@ -24,9 +29,27 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	readUsers, _ := os.ReadFile("db/users.json")
 	json.Unmarshal(readUsers, &users)
 
-	newuser.ID = len(users) + 1 // logikasini tog'irlash kk
+	if len(users) == 0 {
+		newuser.ID = 1
+	} else {
+		var max int = users[0].ID
+		for i := 0; i < len(users); i++ {
+			if users[i].ID > max {
+				max = users[i].ID
+			}
+		}
 
-	// qo'shishdan oldin username band emasligini tekshirish, band bo'lsa error qaytarish kk
+		newuser.ID = max + 1
+	}
+
+	for i := 0; i < len(users); i++ {
+		if users[i].Username == newuser.Username {
+			fmt.Println("This username is already taken")
+			w.WriteHeader(http.StatusBadRequest)
+			fmt.Fprint(w, "error: This username is already taken")
+			return
+		}
+	}
 	users = append(users, newuser)
 	data, _ := json.Marshal(users)
 
@@ -34,9 +57,17 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(users)
+	json.NewEncoder(w).Encode(newuser)
 }
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updateUser(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func deleteUser(w http.ResponseWriter, r *http.Request) {
 
 }

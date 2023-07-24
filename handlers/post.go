@@ -15,6 +15,10 @@ func PostHandler(w http.ResponseWriter, r *http.Request) {
 		createPost(w, r)
 	case http.MethodGet:
 		getPosts(w, r)
+	case http.MethodPut:
+		updatePost(w, r)
+	case http.MethodDelete:
+		deletePost(w, r)
 	}
 }
 
@@ -39,5 +43,13 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func getPosts(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func updatePost(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func deletePost(w http.ResponseWriter, r *http.Request) {
 
 }

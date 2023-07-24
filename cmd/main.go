@@ -18,6 +18,10 @@ func main() {
 
 	http.HandleFunc("/posts", handlers.PostHandler)
 
+	http.HandleFunc("/comment", handlers.CommentHandler)
+
+	http.HandleFunc("/reply", handlers.ReplyHandler)
+
 	fmt.Println("Server is working on: " + PORT)
 	http.ListenAndServe(":"+PORT, nil)
 }
