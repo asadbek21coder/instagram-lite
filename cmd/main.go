@@ -15,6 +15,7 @@ func main() {
 	http.HandleFunc("/", handlers.GetHomePage)
 
 	http.HandleFunc("/user", handlers.UserHandler)
+	// http.HandleFunc("/user/{id}", handlers.GetUserById)
 
 	http.HandleFunc("/post", handlers.PostHandler)
 

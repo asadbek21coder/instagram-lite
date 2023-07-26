@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/asadbek21coder/instagram/models"
 )
@@ -62,11 +63,32 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
 
+	query := r.URL.Query().Get("id")
+	// fmt.Println(id == "")
+	id, _ := strconv.Atoi(query)
+	
 	read, _ := os.ReadFile("db/users.json")
+	var users []models.User
+	json.Unmarshal(read, &users)
+
+	if query != "" {
+		for i := 0; i < len(users); i++ {
+
+			if id == users[i].ID {
+				w.WriteHeader(http.StatusOK)
+				w.Header().Set("Content-Type", "application/json")
+				json.NewEncoder(w).Encode(users[i])
+				return
+			}
+
+		}
+
+	}
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprint(w, string(read))
+
 }
 
 func updateUser(w http.ResponseWriter, r *http.Request) {
@@ -76,3 +98,10 @@ func updateUser(w http.ResponseWriter, r *http.Request) {
 func deleteUser(w http.ResponseWriter, r *http.Request) {
 
 }
+
+// func GetUserById(w http.ResponseWriter, r *http.Request) {
+// 	id := r.URL.Query().Get("id")
+// 	fmt.Println(id)
+// 	fmt.Println("gello")
+
+// }
