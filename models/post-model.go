@@ -25,7 +25,3 @@ type GetAllPosts struct {
 	// UpdatedAt time.Time
 }
 
-type CommentWithreply struct {
-	Comment Comment
-	Replies []Reply
-}

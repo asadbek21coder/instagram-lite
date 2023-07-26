@@ -51,7 +51,35 @@ func createComment(w http.ResponseWriter, r *http.Request) {
 }
 
 func getComments(w http.ResponseWriter, r *http.Request) {
+	var comments []models.Comment
+	readComments, _ := os.ReadFile("db/comments.json")
+	json.Unmarshal(readComments, &comments)
+	var res []models.CommentWithreply
 
+	for i := 0; i < len(comments); i++ {
+		var newComment models.CommentWithreply
+		// newComment.Comment.ID = comments[i].ID
+		// newComment.Comment.Body = comments[i].Body
+		// newComment.Comment.CommentedPostId = comments[i].CommentedPostId
+		// newComment.Comment.AuthorId = comments[i].AuthorId
+		// newComment.Comment.CreatedAt = comments[i].CreatedAt
+		// newComment.Comment.LikeCount = comments[i].LikeCount
+		newComment.Comment = comments[i]
+
+		var replies []models.Reply
+		readReply, _ := os.ReadFile("db/replys.json")
+		json.Unmarshal(readReply, &replies)
+
+		for r := 0; r < len(replies); r++ {
+			if replies[r].CommentId == comments[i].ID {
+				newComment.Replies = append(newComment.Replies, replies[r])
+			}
+		}
+		res = append(res, newComment)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
 }
 
 func updateComment(w http.ResponseWriter, r *http.Request) {

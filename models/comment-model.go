@@ -11,3 +11,8 @@ type Comment struct {
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 }
+
+type CommentWithreply struct {
+	Comment Comment
+	Replies []Reply
+}

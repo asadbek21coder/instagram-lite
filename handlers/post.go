@@ -43,13 +43,11 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 }
 
 func getPosts(w http.ResponseWriter, r *http.Request) {
-	// Har bitta post bn uni commentlari va har bitta
-	// commentni replylari bilan birga  chiqarilsin
+
 	var res []models.GetAllPosts
 	var posts []models.Post
 	readPost, _ := os.ReadFile("db/posts.json")
 	json.Unmarshal(readPost, &posts)
-	// fmt.Println(posts)
 	for i := 0; i < len(posts); i++ {
 		var newPost models.GetAllPosts
 		newPost.ID = posts[i].ID
@@ -60,7 +58,6 @@ func getPosts(w http.ResponseWriter, r *http.Request) {
 		newPost.CreatedAt = posts[i].CreatedAt
 
 		var users []models.User
-		// var author models.User
 		readUser, _ := os.ReadFile("db/users.json")
 		json.Unmarshal(readUser, &users)
 
