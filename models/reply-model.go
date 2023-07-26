@@ -12,3 +12,8 @@ type Reply struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+type ReplyWithAuthor struct {
+	Reply  Reply
+	Author User
+}

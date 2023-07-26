@@ -51,7 +51,31 @@ func createReply(w http.ResponseWriter, r *http.Request) {
 }
 
 func getReplies(w http.ResponseWriter, r *http.Request) {
+	readReply, _ := os.ReadFile("db/replys.json")
+	var replies []models.Reply
+	var res []models.ReplyWithAuthor
+	json.Unmarshal(readReply, &replies)
 
+	for i := 0; i < len(replies); i++ {
+		var newReply models.ReplyWithAuthor
+		newReply.Reply = replies[i]
+
+		var users []models.User
+		readUser, _ := os.ReadFile("db/users.json")
+		json.Unmarshal(readUser, &users)
+
+		for u := 0; u < len(users); u++ {
+			if replies[i].AuthorId == users[u].ID {
+				newReply.Author = users[u]
+			}
+		}
+
+		res = append(res, newReply)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(res)
 }
 
 func updateReply(w http.ResponseWriter, r *http.Request) {

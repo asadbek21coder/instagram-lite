@@ -58,12 +58,6 @@ func getComments(w http.ResponseWriter, r *http.Request) {
 
 	for i := 0; i < len(comments); i++ {
 		var newComment models.CommentWithreply
-		// newComment.Comment.ID = comments[i].ID
-		// newComment.Comment.Body = comments[i].Body
-		// newComment.Comment.CommentedPostId = comments[i].CommentedPostId
-		// newComment.Comment.AuthorId = comments[i].AuthorId
-		// newComment.Comment.CreatedAt = comments[i].CreatedAt
-		// newComment.Comment.LikeCount = comments[i].LikeCount
 		newComment.Comment = comments[i]
 
 		var replies []models.Reply
