@@ -14,9 +14,9 @@ func main() {
 
 	http.HandleFunc("/", handlers.GetHomePage)
 
-	http.HandleFunc("/users", handlers.UserHandler)
+	http.HandleFunc("/user", handlers.UserHandler)
 
-	http.HandleFunc("/posts", handlers.PostHandler)
+	http.HandleFunc("/post", handlers.PostHandler)
 
 	http.HandleFunc("/comment", handlers.CommentHandler)
 

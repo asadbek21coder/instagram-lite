@@ -7,9 +7,25 @@ type Post struct {
 	Title     string
 	Body      string
 	ImageUrl  string
-	LikeCount int
 	AuthorId  int
+	LikeCount int
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
-	
+
+type GetAllPosts struct {
+	ID        int
+	Title     string
+	Body      string
+	ImageUrl  string
+	Author    User
+	Comments  []CommentWithreply
+	LikeCount int
+	CreatedAt time.Time
+	// UpdatedAt time.Time
+}
+
+type CommentWithreply struct {
+	Comment Comment
+	Replies []Reply
+}
