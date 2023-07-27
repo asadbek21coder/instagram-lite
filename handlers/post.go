@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -122,6 +123,7 @@ func getPosts(w http.ResponseWriter, r *http.Request) {
 		newPost.ImageUrl = posts[i].ImageUrl
 		newPost.LikeCount = posts[i].LikeCount
 		newPost.CreatedAt = posts[i].CreatedAt
+		newPost.UpdatedAt = posts[i].UpdatedAt
 
 		var users []models.User
 		readUser, _ := os.ReadFile("db/users.json")
@@ -168,11 +170,51 @@ func getPosts(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(res)
-
 }
 
 func updatePost(w http.ResponseWriter, r *http.Request) {
 
+	// 1. requestda yangi update body
+	// fmt.Println(r.Body)
+	// 2. uni parse qilamiz(go tushunadigan formatga o'gramiz)
+
+	var req models.Post
+	json.NewDecoder(r.Body).Decode(&req)
+
+	// 3. posts.json filedan ma`lumotlarni o'qib parse qilamiz(arrayga)
+	var posts []models.Post
+	readPosts, _ := os.ReadFile("db/posts.json")
+	json.Unmarshal(readPosts, &posts)
+
+	// 4. postlar joylangan shu array bo'yicha yurib chiqib, bodyda kelgan id bilan bir xil id`li elementni indexini olamiz
+	index := -1
+	for p := 0; p < len(posts); p++ {
+		if req.ID == posts[p].ID {
+			index = p
+		}
+	}
+
+	if index == -1 {
+		fmt.Println("Bunday id li element yo'q")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, "Bunday id li element yo'q")
+		return
+	}
+
+	// 5. o'sha elementni arraydan o'chirib, yangi elementni qo'shamiz
+
+	posts = append(posts[:index], posts[index+1:]...)
+	req.UpdatedAt = time.Now()
+	posts = append(posts, req)
+
+	// 6. hosil bo'lgan arrayni marshall qilib faylga yozamiz
+	postsJson, _ := json.Marshal(posts)
+	os.WriteFile("db/posts.json", postsJson, 0)
+	// 7. response`da jo'natamiz
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(req)
 }
 
 func deletePost(w http.ResponseWriter, r *http.Request) {

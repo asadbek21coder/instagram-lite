@@ -99,9 +99,3 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// func GetUserById(w http.ResponseWriter, r *http.Request) {
-// 	id := r.URL.Query().Get("id")
-// 	fmt.Println(id)
-// 	fmt.Println("gello")
-
-// }

@@ -22,6 +22,5 @@ type GetAllPosts struct {
 	Comments  []CommentWithreply
 	LikeCount int
 	CreatedAt time.Time
-	// UpdatedAt time.Time
+	UpdatedAt time.Time
 }
-

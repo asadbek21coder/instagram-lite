@@ -77,7 +77,13 @@ func getComments(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateComment(w http.ResponseWriter, r *http.Request) {
-
+	// 1. requestda yangi update body
+    // 2. uni parse qilamiz(go tushunadigan formatga o'gramiz)
+    // 3. comments.json filedan ma`lumotlarni o'qib parse qilamiz(arrayga)
+    // 4. commentlar joylangan shu array bo'yicha yurib chiqib, bodyda kelgan id bilan bir xil id`li elementni olamiz
+    // 5. o'sha elementni arraydan o'chirib, tangi elementni qo'shamiz
+    // 6. hosil bo'lgan arrayni marshall qilib faylga yozamiz
+    // 7. response`da jo'natamiz
 }
 
 func deleteComment(w http.ResponseWriter, r *http.Request) {
