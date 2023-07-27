@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -78,12 +79,51 @@ func getComments(w http.ResponseWriter, r *http.Request) {
 
 func updateComment(w http.ResponseWriter, r *http.Request) {
 	// 1. requestda yangi update body
-    // 2. uni parse qilamiz(go tushunadigan formatga o'gramiz)
-    // 3. comments.json filedan ma`lumotlarni o'qib parse qilamiz(arrayga)
-    // 4. commentlar joylangan shu array bo'yicha yurib chiqib, bodyda kelgan id bilan bir xil id`li elementni olamiz
-    // 5. o'sha elementni arraydan o'chirib, tangi elementni qo'shamiz
-    // 6. hosil bo'lgan arrayni marshall qilib faylga yozamiz
-    // 7. response`da jo'natamiz
+	// 2. uni parse qilamiz(go tushunadigan formatga o'gramiz)
+	var newComment models.Comment
+	json.NewDecoder(r.Body).Decode(&newComment)
+
+	// 3. comments.json filedan ma`lumotlarni o'qib parse qilamiz(arrayga)
+	var comments []models.Comment
+	readdComment, _ := os.ReadFile("db/comments.json")
+	json.Unmarshal(readdComment, &comments)
+
+	// 4. commentlar joylangan shu array bo'yicha yurib chiqib, bodyda kelgan id bilan bir xil id`li elementni olamiz
+	index := -1
+	for i := 0; i < len(comments); i++ {
+
+		if newComment.ID == comments[i].ID {
+			index = i
+			newComment.AuthorId = comments[i].AuthorId
+			newComment.CommentedPostId = comments[i].CommentedPostId
+			newComment.LikeCount = comments[i].LikeCount
+			newComment.CreatedAt = comments[i].CreatedAt
+		}
+	}
+
+	if index == -1 {
+		fmt.Println("Bunday id`li comment yoq")
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprint(w, "Bunday id li element yo'q")
+		return
+	}
+
+	// 5. o'sha elementni arraydan o'chirib, tangi elementni qo'shamiz
+
+	comments = append(comments[:index], comments[index+1:]...)
+	newComment.UpdatedAt = time.Now()
+	comments = append(comments, newComment)
+
+	// 6. hosil bo'lgan arrayni marshall qilib faylga yozamiz
+
+	jsonComments, _ := json.Marshal(comments)
+	os.WriteFile("db/comments.json", jsonComments, 0)
+
+	// 7. response`da jo'natamiz
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(newComment)
+
 }
 
 func deleteComment(w http.ResponseWriter, r *http.Request) {
